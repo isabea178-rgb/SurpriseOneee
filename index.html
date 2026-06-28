@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Para ti 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; height: 100vh; background: #1a1a2e; color: #fff; font-family: 'Quicksand', sans-serif; display: flex; justify-content: center; align-items: center; flex-direction: column; overflow: hidden; text-align: center; }
+        
+        #btn-start { padding: 20px 50px; font-size: 24px; border-radius: 50px; border: 2px solid #e94560; background: transparent; color: white; cursor: pointer; transition: 0.3s; }
+        #btn-start:hover { background: #e94560; }
+
+        #dedicatoria-box { display: none; max-width: 80%; }
+        #cronometro { font-size: 48px; color: #e94560; margin-bottom: 20px; }
+        #mensaje { font-size: 22px; line-height: 1.5; }
+
+        #lyric-line { font-size: 32px; opacity: 0; transition: opacity 1s; }
+        .visible { opacity: 1 !important; }
+        .heart { position: absolute; color: #e94560; animation: float 5s linear infinite; }
+        @keyframes float { 0% { transform: translateY(100vh); opacity: 0; } 100% { transform: translateY(-10vh); opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="C:\Users\Lenovo\Desktop\Alyssa\amor_de_siempre.mp3.mp3"></audio>
+
+    <button id="btn-start">Para ti 💖</button>
+
+    <div id="dedicatoria-box">
+        <div id="cronometro">30</div>
+        <p id="mensaje">Encontré una manera divertida y creativa para dedicarte canciones, aunque ahora no se vea tan bien, espero que te guste, corazón.</p>
+    </div>
+
+    <div id="lyric-line"></div>
+
+    <script>
+        const btn = document.getElementById('btn-start');
+        const dedicatoriaBox = document.getElementById('dedicatoria-box');
+        const cronoEl = document.getElementById('cronometro');
+        const lyricEl = document.getElementById('lyric-line');
+        const music = document.getElementById('bg-music');
+
+        const lyrics = [
+            { text: "Cuando veo esos ojos, ahí es donde quiero vivir", duration: 7000 },
+            { text: "Si me besan esos labios, ay, así quiero morir", duration: 7500 },
+            { text: "Mi canción de amor ahorita, cuando me dices te amo", duration: 7000 },
+            { text: "Quiero ver esa sonrisa en mi cama al amanecer", duration: 8000 }
+        ];
+
+        btn.addEventListener('click', () => {
+            btn.style.display = 'none';
+            dedicatoriaBox.style.display = 'block';
+            music.play();
+            
+            // Lógica del cronómetro
+            let tiempo = 30;
+            const timer = setInterval(() => {
+                tiempo--;
+                cronoEl.textContent = tiempo;
+                if (tiempo <= 0) {
+                    clearInterval(timer);
+                    dedicatoriaBox.style.display = 'none';
+                    iniciarLetra();
+                }
+            }, 1000);
+        });
+
+        function iniciarLetra() {
+            createHearts();
+            let delay = 0;
+            lyrics.forEach((line) => {
+                setTimeout(() => {
+                    lyricEl.textContent = line.text;
+                    lyricEl.classList.add('visible');
+                    setTimeout(() => lyricEl.classList.remove('visible'), line.duration - 1000);
+                }, delay);
+                delay += line.duration;
+            });
+        }
+
+        function createHearts() {
+            setInterval(() => {
+                const h = document.createElement('div'); h.innerHTML = '❤'; h.className = 'heart';
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.animationDuration = Math.random() * 3 + 3 + 's';
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 5000);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
